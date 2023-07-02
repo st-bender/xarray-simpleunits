@@ -27,6 +27,9 @@ def test_add():
     assert v.units == au.Unit("m")
     vp = ds["s"] + (2.0 * au.Unit("m"))
     assert vp.units == au.Unit("m")
+    # conversion to units of first array
+    vpp = ds["s"] + (6378 * au.Unit("km"))
+    assert vpp.units == au.Unit("m")
     with pytest.raises(ValueError):
         vp = ds["s"] + ds["t"]
 
@@ -37,6 +40,9 @@ def test_sub():
     assert v.units == au.Unit("s")
     vp = ds["t"] - (5.0 * au.Unit("s"))
     assert vp.units == au.Unit("s")
+    # conversion to units of first array
+    vpp = ds["s"] - (10. * au.Unit("mm"))
+    assert vpp.units == au.Unit("m")
     with pytest.raises(ValueError):
         vp = ds["t"] - ds["s"]
 
