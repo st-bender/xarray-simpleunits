@@ -50,7 +50,12 @@ def _get_values(x):
 def add_u(a, b):
     """Addition with units
     """
-    if _get_unit(a) != _get_unit(b):
+    a_u = _get_unit(a)
+    try:
+        b = b.to(a_u)
+    except AttributeError:
+        b = b.to_unit(a_u)
+    except au.UnitConversionError:
         raise ValueError("Unit mismatch in additon.")
     ret = a._binary_op(_get_values(b), xr.core._typed_ops.operator.add)
     ret.attrs["units"] = _get_unit(a)
@@ -61,7 +66,12 @@ def add_u(a, b):
 def sub_u(a, b):
     """Subtraction with units
     """
-    if _get_unit(a) != _get_unit(b):
+    a_u = _get_unit(a)
+    try:
+        b = b.to(a_u)
+    except AttributeError:
+        b = b.to_unit(a_u)
+    except au.UnitConversionError:
         raise ValueError("Unit mismatch in subtraction.")
     ret = a._binary_op(_get_values(b), xr.core._typed_ops.operator.sub)
     ret.attrs["units"] = _get_unit(a)
