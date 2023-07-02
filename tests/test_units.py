@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 # vim:fileencoding=utf-8
+import numpy as np
 import xarray as xr
 
 import pytest
@@ -29,6 +30,7 @@ def test_add():
     assert vp.units == au.Unit("m")
     # conversion to units of first array
     vpp = ds["s"] + (6378 * au.Unit("km"))
+    np.testing.assert_allclose(vpp.values, [6378001, 6378002, 6378003])
     assert vpp.units == au.Unit("m")
     with pytest.raises(ValueError):
         vp = ds["s"] + ds["t"]
@@ -42,6 +44,7 @@ def test_sub():
     assert vp.units == au.Unit("s")
     # conversion to units of first array
     vpp = ds["s"] - (10. * au.Unit("mm"))
+    np.testing.assert_allclose(vpp.values, [0.99, 1.99, 2.99])
     assert vpp.units == au.Unit("m")
     with pytest.raises(ValueError):
         vp = ds["t"] - ds["s"]
