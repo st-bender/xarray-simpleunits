@@ -34,6 +34,8 @@ def test_add():
     assert vpp.units == au.Unit("m")
     with pytest.raises(ValueError):
         vp = ds["s"] + ds["t"]
+    with pytest.raises(ValueError):
+        vp = ds["s"] + (10.0 * au.Unit("s"))
 
 
 def test_sub():
@@ -48,6 +50,8 @@ def test_sub():
     assert vpp.units == au.Unit("m")
     with pytest.raises(ValueError):
         vp = ds["t"] - ds["s"]
+    with pytest.raises(ValueError):
+        vp = ds["t"] - (10.0 * au.Unit("m"))
 
 
 def test_mul():
