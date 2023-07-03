@@ -147,11 +147,3 @@ def init_units():
     setattr(xr.DataArray, "to_unit", to_unit)
     # set `xarray` to keep track of attributes, that includes units
     xr.set_options(keep_attrs=True)
-
-    au.add_enabled_aliases({"degrees_north": au.degree})
-    au.add_enabled_aliases({"degrees_east": au.degree})
-    au.add_enabled_aliases({"degree_north": au.degree})
-    au.add_enabled_aliases({"degree_east": au.degree})
-    au.add_enabled_aliases({"ppm": 1e-6 * au.mol / au.mol})
-    au.add_enabled_aliases({"ppb": 1e-9 * au.mol / au.mol})
-    au.add_enabled_aliases({"ppt": 1e-12 * au.mol / au.mol})
