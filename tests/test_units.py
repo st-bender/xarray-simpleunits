@@ -78,3 +78,10 @@ def test_div():
     assert vp.units == au.Unit("m / s2")
     vppp = ds["s"] / ds["t"] / au.Unit("s / kg")
     assert vppp.units == au.Unit("N")
+
+
+def test_lin():
+    ds = _prep_ds()
+    v = ds["s"] + ds["t"] * (7.2 * au.Unit("km / h"))
+    np.testing.assert_allclose(v.values, [7, 6, 5])
+    assert v.units == au.Unit("m")
