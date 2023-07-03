@@ -39,7 +39,7 @@ def _get_unit(x):
 
 # %%
 def _get_values(x):
-    """Infer unit(s) from attributes
+    """Get values from quantity
     """
     if hasattr(x, "value"):
         return x.value
