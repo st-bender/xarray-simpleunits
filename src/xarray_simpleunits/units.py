@@ -47,14 +47,26 @@ def _get_values(x):
 
 
 # %%
+def _convert(a, u):
+    try:
+        ret = a.to(u)
+    except AttributeError:
+        try:
+            ret = a.to_unit(u)
+        except au.UnitConversionError:
+            raise
+    except au.UnitConversionError:
+        raise
+    return ret
+
+
+# %%
 def add_u(a, b):
     """Addition with units
     """
     a_u = _get_unit(a)
     try:
-        b = b.to(a_u)
-    except AttributeError:
-        b = b.to_unit(a_u)
+        b = _convert(b, a_u)
     except au.UnitConversionError:
         raise ValueError("Unit mismatch in additon.")
     ret = a.__add_orig__(_get_values(b))
@@ -68,9 +80,7 @@ def sub_u(a, b):
     """
     a_u = _get_unit(a)
     try:
-        b = b.to(a_u)
-    except AttributeError:
-        b = b.to_unit(a_u)
+        b = _convert(b, a_u)
     except au.UnitConversionError:
         raise ValueError("Unit mismatch in subtraction.")
     ret = a.__sub_orig__(_get_values(b))
