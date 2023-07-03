@@ -57,7 +57,7 @@ def add_u(a, b):
         b = b.to_unit(a_u)
     except au.UnitConversionError:
         raise ValueError("Unit mismatch in additon.")
-    ret = a._binary_op(_get_values(b), xr.core._typed_ops.operator.add)
+    ret = a.__add_orig__(_get_values(b))
     ret.attrs["units"] = _get_unit(a)
     return ret
 
@@ -73,7 +73,7 @@ def sub_u(a, b):
         b = b.to_unit(a_u)
     except au.UnitConversionError:
         raise ValueError("Unit mismatch in subtraction.")
-    ret = a._binary_op(_get_values(b), xr.core._typed_ops.operator.sub)
+    ret = a.__sub_orig__(_get_values(b))
     ret.attrs["units"] = _get_unit(a)
     return ret
 
@@ -82,7 +82,7 @@ def sub_u(a, b):
 def mul_u(a, b):
     """Multiplication with units
     """
-    ret = a._binary_op(b, xr.core._typed_ops.operator.mul)
+    ret = a.__mul_orig__(b)
     ret_u = _get_unit(a) * _get_unit(b)
     ret.attrs["units"] = ret_u.si
     return ret
@@ -92,7 +92,7 @@ def mul_u(a, b):
 def truediv_u(a, b):
     """Division with units
     """
-    ret = a._binary_op(b, xr.core._typed_ops.operator.truediv)
+    ret = a.__truediv_orig__(b)
     ret_u = _get_unit(a) / _get_unit(b)
     ret.attrs["units"] = ret_u.si
     return ret
@@ -117,11 +117,22 @@ def to_unit(a, u):
 
 # %%
 def init_units():
+    # save "original" functions
+    xr.DataArray.__add_orig__ = xr.DataArray.__add__
+    xr.DataArray.__sub_orig__ = xr.DataArray.__sub__
+    xr.DataArray.__mul_orig__ = xr.DataArray.__mul__
+    if hasattr(xr.DataArray, "__truediv__"):  # Py3
+        xr.DataArray.__truediv_orig__ = xr.DataArray.__truediv__
+    else:
+        xr.DataArray.__truediv_orig__ = xr.DataArray.__div__
     # point DataArray operations to our functions
     xr.DataArray.__add__ = add_u
     xr.DataArray.__sub__ = sub_u
     xr.DataArray.__mul__ = mul_u
-    xr.DataArray.__truediv__ = truediv_u
+    if hasattr(xr.DataArray, "__truediv__"):
+        xr.DataArray.__truediv__ = truediv_u  # Py3
+    else:
+        xr.DataArray.__div__ = truediv_u  # Py2
     # Add a unit conversion function
     setattr(xr.DataArray, "to_unit", to_unit)
     # set `xarray` to keep track of attributes, that includes units
