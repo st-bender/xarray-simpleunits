@@ -127,6 +127,11 @@ def to_unit(a, u):
 
 # %%
 def init_units():
+    # Do nothing if units are already enabled.
+    # Otherwise setting the functions will call themselves,
+    # resulting in an infinite recursion.
+    if hasattr(xr.DataArray, "__has_units__"):
+        return
     # save "original" functions
     xr.DataArray.__add_orig__ = xr.DataArray.__add__
     xr.DataArray.__sub_orig__ = xr.DataArray.__sub__
@@ -147,3 +152,5 @@ def init_units():
     setattr(xr.DataArray, "to_unit", to_unit)
     # set `xarray` to keep track of attributes, that includes units
     xr.set_options(keep_attrs=True)
+    # Mark as initialized.
+    xr.DataArray.__has_units__ = True
