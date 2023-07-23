@@ -93,8 +93,10 @@ array is on the left side of any calculation:
 
 ```python
 >>> from astropy import units as au
+>>> import numpy as np
 >>> import xarray as xr
 >>> import xarray_simpleunits as xru
+>>> np.set_printoptions(precision=6)
 >>> xru.init_units()
 >>> ds = xr.Dataset(
 ...     data_vars={
@@ -105,7 +107,7 @@ array is on the left side of any calculation:
 >>> v = ds["s"] / ds["t"]
 >>> v
 <xarray.DataArray (x: 3)>
-array([0.33333333, 1.        , 3.        ])
+array([0.333333, 1.      , 3.      ])
 Dimensions without coordinates: x
 Attributes:
     units:    m / s
