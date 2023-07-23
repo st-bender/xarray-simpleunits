@@ -1,5 +1,9 @@
 # Xarray_SimpleUnits
 
+[![builds](https://github.com/st-bender/xarray-simpleunits/actions/workflows/ci_build_and_test.yml/badge.svg?branch=main)](https://github.com/st-bender/xarray-simpleunits/actions/workflows/ci_build_and_test.yml)
+[![codecov](https://codecov.io/gh/st-bender/xarray-simpleunits/branch/main/graphs/badge.svg)](https://codecov.io/gh/st-bender/xarray-simpleunits)
+[![coveralls](https://coveralls.io/repos/github/st-bender/xarray-simpleunits/badge.svg)](https://coveralls.io/github/st-bender/xarray-simpleunits)
+
 **Unitful calculations with `xarray`**
 
 Keeps track of units when working with `xarray.DataArray`s using
