@@ -70,11 +70,13 @@ def test_mul():
 def test_div():
     ds = _prep_ds()
     v = ds["s"] / ds["t"]
+    np.testing.assert_allclose(v.values, [1. / 3., 1., 3.])
     assert v.units == au.Unit("m / s")
     vpp = ds["s"] / au.Unit("s")
     assert vpp.units == au.Unit("m / s")
     tp = 2 * au.Unit("s")
     vp = ds["s"] / ds["t"] / tp
+    np.testing.assert_allclose(vp.values, [1. / 6., 0.5, 1.5])
     assert vp.units == au.Unit("m / s2")
     vppp = ds["s"] / ds["t"] / au.Unit("s / kg")
     assert vppp.units == au.Unit("N")
