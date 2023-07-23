@@ -136,17 +136,15 @@ def init_units():
     xr.DataArray.__add_orig__ = xr.DataArray.__add__
     xr.DataArray.__sub_orig__ = xr.DataArray.__sub__
     xr.DataArray.__mul_orig__ = xr.DataArray.__mul__
-    if hasattr(xr.DataArray, "__truediv__"):  # Py3
-        xr.DataArray.__truediv_orig__ = xr.DataArray.__truediv__
-    else:
-        xr.DataArray.__truediv_orig__ = xr.DataArray.__div__
+    xr.DataArray.__truediv_orig__ = xr.DataArray.__truediv__
+    if hasattr(xr.DataArray, "__div__"):  # Py2
+        xr.DataArray.__div_orig__ = xr.DataArray.__div__
     # point DataArray operations to our functions
     xr.DataArray.__add__ = add_u
     xr.DataArray.__sub__ = sub_u
     xr.DataArray.__mul__ = mul_u
-    if hasattr(xr.DataArray, "__truediv__"):
-        xr.DataArray.__truediv__ = truediv_u  # Py3
-    else:
+    xr.DataArray.__truediv__ = truediv_u  # Py3
+    if hasattr(xr.DataArray, "__div__"):
         xr.DataArray.__div__ = truediv_u  # Py2
     # Add a unit conversion function
     setattr(xr.DataArray, "to_unit", to_unit)
