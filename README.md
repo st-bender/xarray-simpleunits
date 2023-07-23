@@ -80,8 +80,8 @@ and appropriately shaped arrays.
 
 ```
 
-The module basically works by adapting the `xarray.DataArray` arithmetic
-methods by keeping track of the "units" attribute.
+The module basically works by adapting (“monkey-patching”) the `xarray.DataArray` arithmetic
+methods to honour and keep track of the "units" attribute.
 To initialize unit handling with `xarray`, call `init_units()` first:
 
 ```python
@@ -89,8 +89,9 @@ To initialize unit handling with `xarray`, call `init_units()` first:
 >>> xru.init_units()
 
 ```
+(A similar method to restore the original behaviour is planned.)
 
-Supported operations are addition, subtraction, multiplication, and division.
+So far, the supported operations are addition, subtraction, multiplication, and division.
 Unit mismatch when adding or subtracting unitful arrays raises an exception.
 Currently, unit handling with `xarray.DataArray` requires that the respective
 array is on the left side of any calculation:
