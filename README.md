@@ -1,6 +1,9 @@
 # Xarray_SimpleUnits
 
 [![builds](https://github.com/st-bender/xarray-simpleunits/actions/workflows/ci_build_and_test.yml/badge.svg?branch=main)](https://github.com/st-bender/xarray-simpleunits/actions/workflows/ci_build_and_test.yml)
+[![package](https://img.shields.io/pypi/v/xarray-simpleunits.svg?style=flat)](https://pypi.org/project/xarray-simpleunits)
+[![wheel](https://img.shields.io/pypi/wheel/xarray-simpleunits.svg?style=flat)](https://pypi.org/project/xarray-simpleunits)
+[![pyversions](https://img.shields.io/pypi/pyversions/xarray-simpleunits.svg?style=flat)](https://pypi.org/project/xarray-simpleunits)
 [![codecov](https://codecov.io/gh/st-bender/xarray-simpleunits/branch/main/graphs/badge.svg)](https://codecov.io/gh/st-bender/xarray-simpleunits)
 [![coveralls](https://coveralls.io/repos/github/st-bender/xarray-simpleunits/badge.svg)](https://coveralls.io/github/st-bender/xarray-simpleunits)
 
