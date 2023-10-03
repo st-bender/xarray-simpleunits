@@ -120,7 +120,9 @@ def add_method(cls):
 # %%
 # @add_method(xr.DataArray)
 def to_unit(a, u):
-    ret = a * _get_unit(a).to(u)
+    # multiply by conversion factor
+    ret = _get_unit(a).to(u) * a
+    # update "units" attribute
     ret.attrs["units"] = u
     return ret
 
