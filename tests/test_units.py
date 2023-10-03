@@ -87,3 +87,15 @@ def test_lin():
     v = ds["s"] + ds["t"] * (7.2 * au.Unit("km / h"))
     np.testing.assert_allclose(v.values, [7, 6, 5])
     assert v.units == au.Unit("m")
+
+
+def test_to_u():
+    ds = _prep_ds()
+    v = ds["s"].to_unit("mm")
+    np.testing.assert_allclose(v.values, [1000., 2000., 3000.])
+    assert v.units == au.Unit("mm")
+    vp = ds["t"].to_unit("ns")
+    np.testing.assert_allclose(vp.values, [3e9, 2e9, 1e9])
+    assert vp.units == au.Unit("ns")
+    with pytest.raises(ValueError):
+        vpp = ds["s"].to_unit("s")
