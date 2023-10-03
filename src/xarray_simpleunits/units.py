@@ -130,7 +130,7 @@ def init_units():
     # Do nothing if units are already enabled.
     # Otherwise setting the functions will call themselves,
     # resulting in an infinite recursion.
-    if hasattr(xr.DataArray, "__has_units__"):
+    if getattr(xr.DataArray, "__has_units__", False):
         return
     # save "original" functions
     xr.DataArray.__add_orig__ = xr.DataArray.__add__
