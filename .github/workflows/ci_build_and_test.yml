@@ -41,6 +41,10 @@ jobs:
           path: ~/.cache/pip
           restore-keys: |
             ${{ runner.os }}-pip-
+      - name: Update package list
+        run: |
+          sudo apt-get update
+        if: startsWith(matrix.os, 'ubuntu')
       - name: Set up Python ${{ matrix.python-version }} on ${{ matrix.os }}
         uses: MatteoH2O1999/setup-python@v1
         with:
