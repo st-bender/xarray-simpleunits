@@ -95,6 +95,9 @@ def mul_u(a, b):
     ret = a.__mul_orig__(b)
     ret_u = _get_unit(a) * _get_unit(b)
     ret.attrs["units"] = ret_u.si
+    if getattr(a, "__keep_si__", False):
+        _u = (1 * ret_u).si.unit
+        ret = ret.to_unit(str(_u))
     return ret
 
 
@@ -105,6 +108,9 @@ def truediv_u(a, b):
     ret = a.__truediv_orig__(b)
     ret_u = _get_unit(a) / _get_unit(b)
     ret.attrs["units"] = ret_u.si
+    if getattr(a, "__keep_si__", False):
+        _u = (1 * ret_u).si.unit
+        ret = ret.to_unit(str(_u))
     return ret
 
 
@@ -128,7 +134,7 @@ def to_unit(a, u):
 
 
 # %%
-def init_units():
+def init_units(keep_si=False):
     # Do nothing if units are already enabled.
     # Otherwise setting the functions will call themselves,
     # resulting in an infinite recursion.
@@ -150,6 +156,7 @@ def init_units():
         xr.DataArray.__div__ = truediv_u  # Py2
     # Add a unit conversion function
     setattr(xr.DataArray, "to_unit", to_unit)
+    setattr(xr.DataArray, "__keep_si__", keep_si)
     # set `xarray` to keep track of attributes, that includes units
     xr.set_options(keep_attrs=True)
     # Mark as initialized.
