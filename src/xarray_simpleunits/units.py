@@ -70,7 +70,7 @@ def add_u(a, b):
     except au.UnitConversionError:
         raise ValueError("Unit mismatch in additon.")
     ret = a.__add_orig__(_get_values(b))
-    ret.attrs["units"] = _get_unit(a)
+    ret.attrs["units"] = str(_get_unit(a))
     return ret
 
 
@@ -84,7 +84,7 @@ def sub_u(a, b):
     except au.UnitConversionError:
         raise ValueError("Unit mismatch in subtraction.")
     ret = a.__sub_orig__(_get_values(b))
-    ret.attrs["units"] = _get_unit(a)
+    ret.attrs["units"] = str(_get_unit(a))
     return ret
 
 
