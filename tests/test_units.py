@@ -91,14 +91,14 @@ def test_lin():
 
 def test_lin_si():
     ds = _prep_ds()
-    _si = getattr(xr.DataArray, "__keep_si__", False)
-    setattr(xr.DataArray, "__keep_si__", True)
+    _si = getattr(xr.Variable, "__keep_si__", False)
+    setattr(xr.Variable, "__keep_si__", True)
     v = ds["t"] * (7.2 * au.Unit("km / h"))
     np.testing.assert_allclose(v.values, [6, 4, 2])
     assert v.units == au.Unit("m")
     if not _si:
         # clean up
-        delattr(xr.DataArray, "__keep_si__")
+        delattr(xr.Variable, "__keep_si__")
 
 
 def test_to_u():
