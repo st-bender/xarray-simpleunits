@@ -140,26 +140,29 @@ def init_units(keep_si=False):
     # Do nothing if units are already enabled.
     # Otherwise setting the functions will call themselves,
     # resulting in an infinite recursion.
-    if getattr(xr.DataArray, "__has_units__", False):
+    if getattr(xr.Variable, "__has_units__", False):
         return
     # save "original" functions
-    xr.DataArray.__add_orig__ = xr.DataArray.__add__
-    xr.DataArray.__sub_orig__ = xr.DataArray.__sub__
-    xr.DataArray.__mul_orig__ = xr.DataArray.__mul__
-    xr.DataArray.__truediv_orig__ = xr.DataArray.__truediv__
-    if hasattr(xr.DataArray, "__div__"):  # Py2
-        xr.DataArray.__div_orig__ = xr.DataArray.__div__
+    xr.Variable.__add_orig__ = xr.Variable.__add__
+    xr.Variable.__sub_orig__ = xr.Variable.__sub__
+    xr.Variable.__mul_orig__ = xr.Variable.__mul__
+    xr.Variable.__truediv_orig__ = xr.Variable.__truediv__
+    if hasattr(xr.Variable, "__div__"):  # Py2
+        xr.Variable.__div_orig__ = xr.Variable.__div__
     # point DataArray operations to our functions
-    xr.DataArray.__add__ = add_u
-    xr.DataArray.__sub__ = sub_u
-    xr.DataArray.__mul__ = mul_u
-    xr.DataArray.__truediv__ = truediv_u  # Py3
-    if hasattr(xr.DataArray, "__div__"):
-        xr.DataArray.__div__ = truediv_u  # Py2
-    # Add a unit conversion function
+    xr.Variable.__add__ = add_u
+    xr.Variable.__sub__ = sub_u
+    xr.Variable.__mul__ = mul_u
+    xr.Variable.__truediv__ = truediv_u  # Py3
+    if hasattr(xr.Variable, "__div__"):
+        xr.Variable.__div__ = truediv_u  # Py2
+    # Add unit conversion function, needed for both, DataArray and Variable
     setattr(xr.DataArray, "to_unit", to_unit)
-    setattr(xr.DataArray, "__keep_si__", keep_si)
+    setattr(xr.Variable, "to_unit", to_unit)
+    # Track conversion to SI units in multiplication and division
+    setattr(xr.Variable, "__keep_si__", keep_si)
     # set `xarray` to keep track of attributes, that includes units
     xr.set_options(keep_attrs=True)
     # Mark as initialized.
     xr.DataArray.__has_units__ = True
+    xr.Variable.__has_units__ = True
