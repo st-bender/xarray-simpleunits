@@ -114,3 +114,20 @@ def test_to_u():
     assert vp.units == au.Unit("ns")
     with pytest.raises(ValueError):
         vpp = ds["s"].to_unit("s")
+
+
+def test_ds():
+    ds = _prep_ds()
+    st = ds + ds.mean("x")
+    assert st.s.units == "m"
+    assert st.t.units == "s"
+    stp = ds * ds.mean("x")
+    assert stp.s.units == "m2"
+    assert stp.t.units == "s2"
+    stpp = ds / ds.mean("x")
+    assert stpp.s.units == ""
+    assert stpp.t.units == ""
+    # conversion to units of first Dataset
+    sp = ds[["s"]] + (6378 * au.Unit("km"))
+    np.testing.assert_allclose(sp.s.values, [6378001, 6378002, 6378003])
+    assert sp.s.units == au.Unit("m")
