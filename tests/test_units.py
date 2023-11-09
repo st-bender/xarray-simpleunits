@@ -96,6 +96,9 @@ def test_lin_si():
     v = ds["t"] * (7.2 * au.Unit("km / h"))
     np.testing.assert_allclose(v.values, [6, 4, 2])
     assert v.units == au.Unit("m")
+    vp = ds["t"] / ((1 / 7.2) * au.Unit("h / km"))
+    np.testing.assert_allclose(vp.values, [6, 4, 2])
+    assert vp.units == au.Unit("m")
     if not _si:
         # clean up
         delattr(xr.Variable, "__keep_si__")
