@@ -9,7 +9,10 @@ from astropy import units as au
 
 from xarray_simpleunits import init_units
 
-init_units()
+
+@pytest.fixture(autouse=True, scope="module")
+def init_u():
+    init_units()
 
 
 def _prep_ds():
