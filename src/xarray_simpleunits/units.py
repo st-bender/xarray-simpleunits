@@ -32,6 +32,8 @@ def _get_unit(x):
         return x.unit
     elif hasattr(x, "units"):
         return au.Unit(x.units)
+    elif hasattr(x, "attrs"):
+        return au.Unit(x.attrs.get("units", "1"))
     elif isinstance(x, (au.CompositeUnit, au.IrreducibleUnit, au.Unit)):
         return x
     return au.dimensionless_unscaled
