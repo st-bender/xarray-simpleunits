@@ -137,10 +137,11 @@ def to_unit(a, u):
 
 # %%
 def init_units(keep_si=False):
-    # Do nothing if units are already enabled.
+    # Only (re)set SI behaviour if units are already enabled.
     # Otherwise setting the functions will call themselves,
     # resulting in an infinite recursion.
     if getattr(xr.Variable, "__has_units__", False):
+        setattr(xr.Variable, "__keep_si__", keep_si)
         return
     # save "original" functions
     xr.Variable.__add_orig__ = xr.Variable.__add__
