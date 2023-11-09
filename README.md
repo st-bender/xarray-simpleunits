@@ -9,8 +9,8 @@
 
 **Unitful calculations with `xarray`**
 
-Keeps track of units when working with `xarray.DataArray`s using
-`astropy.units` for the conversions.
+Keeps track of units when working with `xarray.DataArray`s
+and `xarray.Dataset`s using `astropy.units` for the conversions.
 
 :warning: This package is in **alpha** stage, that is, it works mostly,
 but the interface might still be subject to change.
@@ -83,7 +83,7 @@ and appropriately shaped arrays.
 
 ```
 
-The module basically works by adapting (“monkey-patching”) the `xarray.DataArray` arithmetic
+The module basically works by adapting (“monkey-patching”) the `xarray.Variable` arithmetic
 methods to honour and keep track of the "units" attribute.
 To initialize unit handling with `xarray`, call `init_units()` first:
 
