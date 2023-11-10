@@ -112,6 +112,16 @@ def test_to_u():
 
 def test_ds():
     ds = _prep_ds()
+    d = ds * 2.0
+    np.testing.assert_allclose(d.s.values, [2, 4, 6])
+    np.testing.assert_allclose(d.t.values, [6, 4, 2])
+    assert d.s.units == "m"
+    assert d.t.units == "s"
+    dp = ds / 2.0
+    np.testing.assert_allclose(dp.s.values, [0.5, 1, 1.5])
+    np.testing.assert_allclose(dp.t.values, [1.5, 1, 0.5])
+    assert dp.s.units == "m"
+    assert dp.t.units == "s"
     st = ds + ds.mean("x")
     assert st.s.units == "m"
     assert st.t.units == "s"
@@ -121,6 +131,9 @@ def test_ds():
     stpp = ds / ds.mean("x")
     assert stpp.s.units == ""
     assert stpp.t.units == ""
+    v1 = ds / (1. * au.Unit("h"))
+    assert v1.s.units == "m / s"
+    assert v1.t.units == ""
     # conversion to units of first Dataset
     vpp = ds[["s"]] + (6378 * au.Unit("km"))
     np.testing.assert_allclose(vpp.s.values, [6378001, 6378002, 6378003])
