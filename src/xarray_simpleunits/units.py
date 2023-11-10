@@ -21,7 +21,7 @@ import xarray as xr
 # %%
 from astropy import units as au
 
-__all__ = ["init_units", "to_unit"]
+__all__ = ["init_units", "reset_units", "to_unit"]
 
 
 # %%
