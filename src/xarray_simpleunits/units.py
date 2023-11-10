@@ -171,3 +171,25 @@ def init_units(keep_si=False):
     # Mark as initialized.
     xr.DataArray.__has_units__ = True
     xr.Variable.__has_units__ = True
+
+
+# %%
+def reset_units():
+    # No units, nothing to reset here.
+    if not getattr(xr.Variable, "__has_units__", False):
+        return
+    for _a, _f in FUNC_MAP.items():
+        orig_attr = _a[:-2] + "_orig__"
+        orig_func = getattr(xr.Variable, orig_attr, None)
+        setattr(xr.Variable, _a, orig_func)
+        delattr(xr.Variable, orig_attr)
+        if orig_func is None:
+            delattr(xr.Variable, _a)
+    # Delete unit conversion function from attributes
+    delattr(xr.DataArray, "to_unit")
+    delattr(xr.Variable, "to_unit")
+    # Delete SI conversion attribute
+    delattr(xr.Variable, "__keep_si__")
+    # Delete unit indicator attributes
+    delattr(xr.DataArray, "__has_units__")
+    delattr(xr.Variable, "__has_units__")
