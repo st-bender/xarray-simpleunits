@@ -1,6 +1,16 @@
 Changelog
 =========
 
+v0.0.3 (unreleased)
+-------------------
+
+### New
+
+- `xarray.Dataset` support by monkey-patching `xarray.Variable`
+  instead of `xarray.DataArray`
+- Implement way to restore standard behaviour with `reset_units()`
+
+
 v0.0.2 (2023-10-17)
 -------------------
 
