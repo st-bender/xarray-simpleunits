@@ -132,3 +132,25 @@ def test_ds():
     sp = ds[["s"]] + (6378 * au.Unit("km"))
     np.testing.assert_allclose(sp.s.values, [6378001, 6378002, 6378003])
     assert sp.s.units == au.Unit("m")
+
+
+def test_reset():
+    from xarray_simpleunits import reset_units
+    reset_units()
+    ds = _prep_ds()
+    stpp = ds / ds.mean("x")
+    # no unit handling, the originals are kept
+    assert stpp.s.units == "m"
+    assert stpp.t.units == "s"
+    # astropy raises ValueError because the first part
+    # does not carry (astropy) units.
+    with pytest.raises(ValueError):
+        sp = ds[["s"]] + (6378 * au.Unit("km"))
+    # Double reset does nothing
+    reset_units()
+    # Re-init
+    init_units()
+    # conversion to units of first Dataset
+    sp = ds[["s"]] + (6378 * au.Unit("km"))
+    np.testing.assert_allclose(sp.s.values, [6378001, 6378002, 6378003])
+    assert sp.s.units == au.Unit("m")
