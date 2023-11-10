@@ -136,6 +136,17 @@ def to_unit(a, u):
 
 
 # %%
+FUNC_MAP = {
+    # attribute name: new function
+    "__add__": add_u,
+    "__sub__": sub_u,
+    "__mul__": mul_u,
+    "__truediv__": truediv_u,
+    "__div__": truediv_u,
+}
+
+
+# %%
 def init_units(keep_si=False):
     # Only (re)set SI behaviour if units are already enabled.
     # Otherwise setting the functions will call themselves,
@@ -143,20 +154,13 @@ def init_units(keep_si=False):
     if getattr(xr.Variable, "__has_units__", False):
         setattr(xr.Variable, "__keep_si__", keep_si)
         return
-    # save "original" functions
-    xr.Variable.__add_orig__ = xr.Variable.__add__
-    xr.Variable.__sub_orig__ = xr.Variable.__sub__
-    xr.Variable.__mul_orig__ = xr.Variable.__mul__
-    xr.Variable.__truediv_orig__ = xr.Variable.__truediv__
-    if hasattr(xr.Variable, "__div__"):  # Py2
-        xr.Variable.__div_orig__ = xr.Variable.__div__
-    # point DataArray operations to our functions
-    xr.Variable.__add__ = add_u
-    xr.Variable.__sub__ = sub_u
-    xr.Variable.__mul__ = mul_u
-    xr.Variable.__truediv__ = truediv_u  # Py3
-    if hasattr(xr.Variable, "__div__"):
-        xr.Variable.__div__ = truediv_u  # Py2
+    for _a, _f in FUNC_MAP.items():
+        orig_attr = _a[:-2] + "_orig__"
+        orig_func = getattr(xr.Variable, _a, None)
+        # save "original" functions as attributes
+        setattr(xr.Variable, orig_attr, orig_func)
+        # point `Variable` operations to functions with units
+        setattr(xr.Variable, _a, _f)
     # Add unit conversion function, needed for both, DataArray and Variable
     setattr(xr.DataArray, "to_unit", to_unit)
     setattr(xr.Variable, "to_unit", to_unit)
