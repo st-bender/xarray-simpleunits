@@ -144,7 +144,7 @@ def test_reset():
     assert stpp.t.units == "s"
     # astropy raises ValueError because the first part
     # does not carry (astropy) units.
-    with pytest.raises(ValueError):
+    with pytest.raises((ValueError, au.UnitsError)):
         sp = ds[["s"]] + (6378 * au.Unit("km"))
     # Double reset does nothing
     reset_units()
