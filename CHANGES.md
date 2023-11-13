@@ -6,6 +6,7 @@ v0.0.3 (unreleased)
 
 ### New
 
+- Adds explicit conversion to SI units: `to_si_units(x)` or `x.to_si_units()`
 - `xarray.Dataset` support by monkey-patching `xarray.Variable`
   instead of `xarray.DataArray`
 - Implement way to restore standard behaviour with `reset_units()`
