@@ -21,7 +21,7 @@ import xarray as xr
 # %%
 from astropy import units as au
 
-__all__ = ["init_units", "reset_units", "to_unit"]
+__all__ = ["init_units", "reset_units", "to_si_units", "to_unit"]
 
 
 # %%
@@ -127,6 +127,14 @@ def add_method(cls):
 
 # %%
 # @add_method(xr.DataArray)
+def to_si_units(a):
+    ret_u = _get_unit(a)
+    _u = (1 * ret_u).si.unit
+    return a.to_unit(str(_u))
+
+
+# %%
+# @add_method(xr.DataArray)
 def to_unit(a, u):
     # multiply by conversion factor
     ret = _get_unit(a).to(u) * a
@@ -164,6 +172,8 @@ def init_units(keep_si=False):
     # Add unit conversion function, needed for both, DataArray and Variable
     setattr(xr.DataArray, "to_unit", to_unit)
     setattr(xr.Variable, "to_unit", to_unit)
+    setattr(xr.DataArray, "to_si_units", to_si_units)
+    setattr(xr.Variable, "to_si_units", to_si_units)
     # Track conversion to SI units in multiplication and division
     setattr(xr.Variable, "__keep_si__", keep_si)
     # set `xarray` to keep track of attributes, that includes units
@@ -188,6 +198,8 @@ def reset_units():
     # Delete unit conversion function from attributes
     delattr(xr.DataArray, "to_unit")
     delattr(xr.Variable, "to_unit")
+    delattr(xr.DataArray, "to_si_units")
+    delattr(xr.Variable, "to_si_units")
     # Delete SI conversion attribute
     delattr(xr.Variable, "__keep_si__")
     # Delete unit indicator attributes
