@@ -154,3 +154,12 @@ def test_reset():
     sp = ds[["s"]] + (6378 * au.Unit("km"))
     np.testing.assert_allclose(sp.s.values, [6378001, 6378002, 6378003])
     assert sp.s.units == au.Unit("m")
+
+
+def test_to_si():
+    ds = _prep_ds()
+    ds["v"] = ("x", [3.6, 7.2, 10.8], {"units": "km / h"})
+    assert ds.v.units == "km / h"
+    vp = ds.v.to_si_units()
+    np.testing.assert_allclose(vp.values, [1, 2, 3])
+    assert vp.units == "m / s"
