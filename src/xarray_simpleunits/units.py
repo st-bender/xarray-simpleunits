@@ -29,7 +29,7 @@ def _get_unit(x):
     """Infer unit(s) from attributes
     """
     if hasattr(x, "unit"):
-        return x.unit
+        return au.Unit(x.unit)
     elif hasattr(x, "units"):
         return au.Unit(x.units)
     elif hasattr(x, "attrs"):
