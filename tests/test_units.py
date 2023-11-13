@@ -39,6 +39,8 @@ def test_add():
         vp = ds["s"] + ds["t"]
     with pytest.raises(ValueError):
         vp = ds["s"] + (10.0 * au.Unit("s"))
+    with pytest.raises(ValueError):
+        vp = ds["s"] + 1
 
 
 def test_sub():
