@@ -51,12 +51,7 @@ def _get_values(x):
 # %%
 def _convert(a, u):
     try:
-        ret = a.to(u)
-    except AttributeError:
-        try:
-            ret = a.to_unit(u)
-        except au.UnitConversionError:
-            raise
+        ret = _get_unit(a).to(u) * a
     except au.UnitConversionError:
         raise
     return ret
