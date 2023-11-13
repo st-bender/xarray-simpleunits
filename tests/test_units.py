@@ -35,11 +35,11 @@ def test_add():
     vpp = ds["s"] + (6378 * au.Unit("km"))
     np.testing.assert_allclose(vpp.values, [6378001, 6378002, 6378003])
     assert vpp.units == au.Unit("m")
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="Unit mismatch"):
         vp = ds["s"] + ds["t"]
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="Unit mismatch"):
         vp = ds["s"] + (10.0 * au.Unit("s"))
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="Unit mismatch"):
         vp = ds["s"] + 1
 
 
@@ -53,9 +53,9 @@ def test_sub():
     vpp = ds["s"] - (10. * au.Unit("mm"))
     np.testing.assert_allclose(vpp.values, [0.99, 1.99, 2.99])
     assert vpp.units == au.Unit("m")
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="Unit mismatch"):
         vp = ds["t"] - ds["s"]
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="Unit mismatch"):
         vp = ds["t"] - (10.0 * au.Unit("m"))
 
 
