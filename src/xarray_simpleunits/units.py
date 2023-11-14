@@ -16,6 +16,8 @@ Provides unit conversions and calculations, basically "overloads"
 from __future__ import absolute_import, division, print_function
 
 # %%
+from numpy import datetime64, timedelta64
+from pandas import DatetimeIndex, Timedelta
 import xarray as xr
 
 # %%
@@ -25,9 +27,21 @@ __all__ = ["init_units", "reset_units", "to_si_units", "to_unit"]
 
 
 # %%
+def _is_datetime(x):
+    return isinstance(
+        x,
+        (datetime64, timedelta64, DatetimeIndex, Timedelta)
+    )
+
+
+# %%
 def _get_unit(x):
     """Infer unit(s) from attributes
     """
+    # Try to handle datetime units first
+    if _is_datetime(x):
+        # units are handled "internally"
+        return au.dimensionless_unscaled
     if hasattr(x, "unit"):
         return au.Unit(x.unit)
     elif hasattr(x, "units"):
@@ -50,6 +64,8 @@ def _get_values(x):
 
 # %%
 def _convert(a, u):
+    if _is_datetime(a):
+        return a
     try:
         ret = _get_unit(a).to(u) * a
     except au.UnitConversionError:
