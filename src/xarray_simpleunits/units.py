@@ -83,7 +83,9 @@ def add_u(a, b):
     except au.UnitConversionError:
         raise ValueError("Unit mismatch in additon.")
     ret = a.__add_orig__(_get_values(b))
-    ret.attrs["units"] = str(_get_unit(a))
+    if ret.dtype.char not in "mM":
+        # datetime arrays take care of the units internally
+        ret.attrs["units"] = str(_get_unit(a))
     return ret
 
 
@@ -97,7 +99,9 @@ def sub_u(a, b):
     except au.UnitConversionError:
         raise ValueError("Unit mismatch in subtraction.")
     ret = a.__sub_orig__(_get_values(b))
-    ret.attrs["units"] = str(_get_unit(a))
+    if ret.dtype.char not in "mM":
+        # datetime arrays take care of the units internally
+        ret.attrs["units"] = str(_get_unit(a))
     return ret
 
 
