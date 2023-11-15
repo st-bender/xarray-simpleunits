@@ -81,7 +81,7 @@ def add_u(a, b):
     try:
         b = _convert(b, a_u)
     except au.UnitConversionError:
-        raise ValueError("Unit mismatch in additon.")
+        raise ValueError("Unit mismatch in addition.")
     ret = a.__add_orig__(_get_values(b))
     if ret.dtype.char not in "mM":
         # datetime arrays take care of the units internally
