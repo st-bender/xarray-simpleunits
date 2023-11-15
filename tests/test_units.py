@@ -2,6 +2,7 @@
 # vim:fileencoding=utf-8
 import numpy as np
 import xarray as xr
+import pandas as pd
 
 import pytest
 
@@ -165,3 +166,48 @@ def test_to_si():
     vp = ds.v.to_si_units()
     np.testing.assert_allclose(vp.values, [1, 2, 3])
     assert vp.units == "m / s"
+
+
+def test_datetime():
+    ds = _prep_ds()
+    ds["t1"] = (
+        "x",
+        pd.date_range("2002-05-01", "2002-05-03"),
+        {"long_name": "time"}
+    )
+    tp = ds["t1"] + pd.Timedelta("12h")
+    np.testing.assert_equal(
+        tp.values,
+        np.array(
+            ["2002-05-01T12", "2002-05-02T12", "2002-05-03T12"],
+            dtype="M8",
+        )
+    )
+    tpp = ds["t1"] + np.timedelta64(1, "s")
+    np.testing.assert_equal(
+        tpp.values,
+        np.array(
+            [
+                "2002-05-01T00:00:01",
+                "2002-05-02T00:00:01",
+                "2002-05-03T00:00:01",
+            ],
+            dtype="M8",
+        )
+    )
+    tdp = ds["t1"] - np.datetime64("2002-01-01")
+    np.testing.assert_equal(
+        tdp.values,
+        np.array(
+            [10368000000000000, 10454400000000000, 10540800000000000],
+            dtype="m8[ns]",
+        )
+    )
+    tdpp = (ds["t1"] - np.datetime64("2002-01-01")) + pd.Timedelta("12h")
+    np.testing.assert_equal(
+        tdpp.values,
+        np.array(
+            [10411200000000000, 10497600000000000, 10584000000000000],
+            dtype="m8[ns]",
+        )
+    )
