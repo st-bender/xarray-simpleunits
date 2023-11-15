@@ -111,7 +111,7 @@ def mul_u(a, b):
     """
     ret = a.__mul_orig__(b)
     ret_u = _get_unit(a) * _get_unit(b)
-    ret.attrs["units"] = ret_u.si
+    ret.attrs["units"] = ret_u
     if getattr(a, "__keep_si__", False):
         _u = (1 * ret_u).si.unit
         ret = ret.to_unit(str(_u))
@@ -124,7 +124,7 @@ def truediv_u(a, b):
     """
     ret = a.__truediv_orig__(b)
     ret_u = _get_unit(a) / _get_unit(b)
-    ret.attrs["units"] = ret_u.si
+    ret.attrs["units"] = ret_u
     if getattr(a, "__keep_si__", False):
         _u = (1 * ret_u).si.unit
         ret = ret.to_unit(str(_u))
