@@ -1,6 +1,19 @@
 Changelog
 =========
 
+v0.0.4 (unreleased)
+-------------------
+
+### New
+
+- Support for numpy and pandas datetime and timedelta variables
+
+### Changes
+
+- Removed implicit conversion to SI units after multiplication
+  and division.
+
+
 v0.0.3 (2023-11-13)
 -------------------
 
