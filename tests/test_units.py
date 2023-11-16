@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# vim:fileencoding=utf-8
+# vim:fileencoding=utf-8:et
 import numpy as np
 import xarray as xr
 import pandas as pd
