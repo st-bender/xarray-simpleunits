@@ -4,9 +4,9 @@ Changelog
 v0.0.4 (unreleased)
 -------------------
 
-### New
+### Fixes
 
-- Support for numpy and pandas datetime and timedelta variables
+- Correctly support numpy and pandas datetime and timedelta variables
 
 ### Changes
 
