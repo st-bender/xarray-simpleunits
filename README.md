@@ -113,16 +113,16 @@ array is on the left side of any calculation:
 ...     },
 ... )
 >>> v = ds["s"] / ds["t"]
->>> v
-<xarray.DataArray (x: 3)>
+>>> v  # doctest: +ELLIPSIS
+<xarray.DataArray (x: 3)>...
 array([0.333333, 1.      , 3.      ])
 Dimensions without coordinates: x
 Attributes:
     units:    m / s
 >>> # using `astropy` units directly:
 >>> v = ds["s"] / (2 * au.Unit("s"))
->>> v
-<xarray.DataArray 's' (x: 3)>
+>>> v  # doctest: +ELLIPSIS
+<xarray.DataArray 's' (x: 3)>...
 array([0.5, 1. , 1.5])
 Dimensions without coordinates: x
 Attributes:
