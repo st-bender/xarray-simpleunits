@@ -21,10 +21,10 @@ jobs:
             os: ubuntu-latest
             python-version: "2.7"
           - name: py35
-            os: ubuntu-20.04
+            os: ubuntu-latest
             python-version: "3.5"
           - name: py36
-            os: ubuntu-20.04
+            os: ubuntu-latest
             python-version: "3.6"
           - name: macos
             os: macos-latest
