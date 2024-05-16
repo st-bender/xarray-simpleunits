@@ -28,7 +28,9 @@ __all__ = ["init_units", "reset_units", "to_si_units", "to_unit"]
 
 # %%
 def _is_datetime(x):
-    return isinstance(
+    _dt = getattr(x, "dtype", None)
+    tt = (getattr(_dt, "char", "").upper() == "M")
+    return tt or isinstance(
         x,
         (datetime64, timedelta64, DatetimeIndex, Timedelta)
     )
