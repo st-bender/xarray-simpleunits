@@ -23,6 +23,7 @@ jobs:
           - name: py35
             os: ubuntu-latest
             python-version: "3.5"
+            pip-trusted-host: "pypi.python.org pypi.org files.pythonhosted.org"
           - name: py36
             os: ubuntu-latest
             python-version: "3.6"
@@ -50,6 +51,8 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
           cache-build: true
+        env:
+          PIP_TRUSTED_HOST: ${{ matrix.pip-trusted-host }}
       - run: lsb_release -a
         if: startsWith(matrix.os, 'ubuntu')
       - run: uname -a
