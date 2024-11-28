@@ -108,10 +108,18 @@ def sub_u(a, b):
 
 
 # %%
+def _variable_from_values(a):
+    # re-construct variable to remove any excess `Unit`s
+    # or `Quantities` from multiplication or division
+    return xr.Variable(a.dims, a.values, attrs=a.attrs, encoding=a.encoding)
+
+
+# %%
 def mul_u(a, b):
     """Multiplication with units
     """
     ret = a.__mul_orig__(b)
+    ret = _variable_from_values(ret)
     ret_u = _get_unit(a) * _get_unit(b)
     ret.attrs["units"] = str(ret_u)
     if getattr(a, "__keep_si__", False):
@@ -125,6 +133,7 @@ def truediv_u(a, b):
     """Division with units
     """
     ret = a.__truediv_orig__(b)
+    ret = _variable_from_values(ret)
     ret_u = _get_unit(a) / _get_unit(b)
     ret.attrs["units"] = str(ret_u)
     if getattr(a, "__keep_si__", False):
