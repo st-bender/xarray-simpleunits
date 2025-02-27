@@ -14,6 +14,6 @@ Extends `xarray` by handling units via `astropy.units`
 in a simplistic way.
 """
 
-__version__ = "0.0.5rc1"
+__version__ = "0.0.5"
 
 from .units import *
