@@ -63,13 +63,16 @@ def test_sub():
 def test_mul():
     ds = _prep_ds()
     v = ds["s"] * ds["t"]
+    np.testing.assert_allclose(v.values, [3., 4., 3.])
     assert v.units == au.Unit("m * s")
     vp = ds["s"] * au.Unit("s")
     assert vp.units == au.Unit("m s")
     tp = 2 * au.Unit("s")
     vpp = ds["s"] * ds["t"] * tp
+    np.testing.assert_allclose(vpp.values, [6., 8., 6.])
     assert vpp.units == au.Unit("m s2")
     vppp = ds["s"] * ds["t"] * au.Unit("kg / s2")
+    np.testing.assert_allclose(vppp.values, [3., 4., 3.])
     assert vppp.units == au.Unit("kg m / s")
 
 
@@ -85,6 +88,7 @@ def test_div():
     np.testing.assert_allclose(vp.values, [1. / 6., 0.5, 1.5])
     assert vp.units == au.Unit("m / s2")
     vppp = ds["s"] / ds["t"] / au.Unit("s / kg")
+    np.testing.assert_allclose(vppp.values, [1. / 3., 1., 3.])
     assert vppp.units == au.Unit("N")
 
 
@@ -93,6 +97,9 @@ def test_lin():
     v = ds["s"] + ds["t"] * (7.2 * au.Unit("km / h"))
     np.testing.assert_allclose(v.values, [7, 6, 5])
     assert v.units == au.Unit("m")
+    vp = ds["s"] + ds["t"] / (1. / 7.2 * au.Unit("h / km"))
+    np.testing.assert_allclose(vp.values, [7, 6, 5])
+    assert vp.units == au.Unit("m")
 
 
 def test_to_u():
