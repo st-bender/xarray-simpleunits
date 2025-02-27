@@ -1,6 +1,14 @@
 Changelog
 =========
 
+v0.0.5 (unreleased)
+-------------------
+
+### Fixes
+
+- Fix multiplication and division with DataArrays and newer astropy
+
+
 v0.0.4 (2023-11-16)
 -------------------
 
