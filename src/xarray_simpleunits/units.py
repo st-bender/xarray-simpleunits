@@ -59,7 +59,9 @@ def _get_unit(x):
 def _get_values(x):
     """Get values from quantity
     """
-    if hasattr(x, "value"):
+    if _is_datetime(x):
+        return x  # keep datetimes
+    elif hasattr(x, "value"):
         return x.value
     return x
 
