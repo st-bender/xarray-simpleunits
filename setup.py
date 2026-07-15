@@ -65,7 +65,6 @@ if __name__ == "__main__":
             "Intended Audience :: Science/Research",
             "License :: OSI Approved :: GNU General Public License v2 (GPLv2)",
             "Programming Language :: Python",
-            "Programming Language :: Python :: 2",
             "Programming Language :: Python :: 3",
             "Topic :: Scientific/Engineering :: Physics",
             "Topic :: Utilities",
@@ -75,7 +74,7 @@ if __name__ == "__main__":
         include_package_data=True,
         install_requires=[
             "astropy",
-            "xarray",
+            "xarray>=2024.11",
         ],
         extras_require=extras_require,
         scripts=[],
