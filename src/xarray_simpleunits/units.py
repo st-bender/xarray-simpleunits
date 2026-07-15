@@ -22,6 +22,7 @@ import xarray as xr
 
 # %%
 from astropy import units as au
+import operator
 
 __all__ = ["init_units", "reset_units", "to_si_units", "to_unit"]
 
@@ -165,20 +166,42 @@ def to_si_units(a):
 # @add_method(xr.DataArray)
 def to_unit(a, u):
     # multiply by conversion factor
-    ret = _get_unit(a).to(u) * a
+    if hasattr(a, "_binary__orig__"):
+        ret = a._binary__orig__(_get_unit(a).to(u), operator.mul)
+    else:
+        ret = _get_unit(a).to(u) * a
     # update "units" attribute
     ret.attrs["units"] = str(u)
     return ret
 
 
 # %%
+def binary_op_u(a, b, op, **kwargs):
+    if _is_datetime(a) or _is_datetime(b):
+        return a._binary__orig__(b, op, **kwargs)
+    u_a = _get_unit(a)
+    u_b = _get_unit(b)
+    if hasattr(a, "_binary__orig__"):
+        a = a._binary__orig__(u_a, operator.mul)
+    if hasattr(b, "_binary__orig__"):
+        b = b._binary__orig__(u_b, operator.mul)
+    try:
+        ret = a._binary__orig__(b, op, **kwargs)
+    except au.UnitConversionError:
+        raise ValueError(f"Unit mismatch in {op}.")
+    ret_u = getattr(ret.data, "unit", "1")
+    ret = _variable_from_values(ret)
+    ret.attrs["units"] = str(ret_u)  # or "1"
+    if getattr(a, "__keep_si__", False):
+        _u = (1 * ret_u).si.unit
+        return ret.to_unit(str(_u))
+    return ret
+
+
+# %%
 FUNC_MAP = {
     # attribute name: new function
-    "__add__": add_u,
-    "__sub__": sub_u,
-    "__mul__": mul_u,
-    "__truediv__": truediv_u,
-    "__div__": truediv_u,
+    "_binary_op": binary_op_u,
 }
 
 
