@@ -15,12 +15,8 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
-        python-version: ["2.7", "3.6", "3.7", "3.8", "3.9", "3.10", "3.11", "3.12"]
+        python-version: ["3.10", "3.11", "3.12", "3.13", "3.14"]
         include:
-          - name: py35
-            os: ubuntu-latest
-            python-version: "3.5"
-            pip-trusted-host: "pypi.python.org pypi.org files.pythonhosted.org"
           - name: macos
             os: macos-latest
             python-version: "3.x"
