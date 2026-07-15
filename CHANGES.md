@@ -1,6 +1,14 @@
 Changelog
 =========
 
+v0.0.6 (unreleased)
+-------------------
+
+### Fixes
+
+- Fix datetime handling for addition and subtraction
+
+
 v0.0.5 (2025-02-27)
 -------------------
 
